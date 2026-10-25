@@ -11,3 +11,7 @@ Uses the five default triage labels: `needs-triage`, `needs-info`, `ready-for-ag
 ### Domain docs
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+### Coding standards
+
+Read `CODING_STANDARDS.md` before writing code. It covers the stack (Riverpod, go_router, hand-written models), folder layout, testing, translations, environments and the branch-and-PR workflow.

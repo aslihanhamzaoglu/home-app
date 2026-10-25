@@ -23,7 +23,7 @@ A Member who can switch Modules on and off, manage membership, and edit House In
 _Avoid_: Owner, moderator, host
 
 **Invite**:
-A shareable code or link, created by an Admin, that lets a person join a Household as a Member.
+A shareable code, created by an Admin, that lets a person join a Household as a Member. Shareable links are planned for later (see ADR-0005).
 _Avoid_: Invitation email, join request
 
 ### Modules
