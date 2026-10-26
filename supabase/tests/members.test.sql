@@ -102,7 +102,7 @@ select results_eq(
   'only Bora remains in Household A'
 );
 
--- Can again: a Member who is not an Admin can leave on their own.
+-- Deniz, a Member who is not an Admin, leaves on their own.
 reset role;
 insert into public.members (household_id, user_id) values
   ('bbbbbbbb-0000-0000-0000-000000000000', '00000000-0000-0000-0000-00000000000d');

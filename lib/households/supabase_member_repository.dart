@@ -36,6 +36,7 @@ class SupabaseMemberRepository implements MemberRepository {
   }
 
   /// Turns the database's "last Admin" error into a [LastAdminException].
+  /// The hint is set by the `keep_an_admin` trigger in supabase/migrations.
   Future<void> _guardLastAdmin(Future<void> Function() write) async {
     try {
       await write();
