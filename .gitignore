@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Production Supabase settings (see env/prod.example.json)
+/env/prod.json

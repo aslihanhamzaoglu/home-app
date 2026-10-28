@@ -81,7 +81,7 @@ Inside a feature folder, use flat files named after what they hold: `household.d
 
 ## Environments
 
-- Supabase URL and anon key come from `--dart-define-from-file`: `env/local.json` (committed, local Docker Supabase) and `env/prod.json` (git-ignored; `env/prod.example.json` shows its shape).
+- Supabase URL and publishable key (`SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`; the successor to the anon key) come from `--dart-define-from-file`: `env/local.json` (committed, local Docker Supabase) and `env/prod.json` (git-ignored; `env/prod.example.json` shows its shape).
 - Run locally with `flutter run --dart-define-from-file=env/local.json`. For a USB-connected Android phone, run `adb reverse tcp:54321 tcp:54321` so `localhost` reaches the laptop. Local sign-in emails land in the local inbox at `http://localhost:54324`.
 
 ## Testing
