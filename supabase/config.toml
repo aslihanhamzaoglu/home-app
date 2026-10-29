@@ -244,6 +244,17 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
+# Sign-in emails carry a 6-digit code ({{ .Token }}) that the person types into
+# the app, instead of a link. New people get the confirmation email, returning
+# people the magic link one; both send the same code.
+[auth.email.template.confirmation]
+subject = "Your Ev sign-in code"
+content_path = "./supabase/templates/sign_in_code.html"
+
+[auth.email.template.magic_link]
+subject = "Your Ev sign-in code"
+content_path = "./supabase/templates/sign_in_code.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"
@@ -335,6 +346,15 @@ url = ""
 skip_nonce_check = false
 # If enabled, it will allow the user to successfully authenticate when the provider does not return an email address.
 email_optional = false
+
+# Native Google sign-in on Android: the app sends Google's ID token and Supabase
+# checks it was issued for this Web client ID. The secret is only used by the
+# browser redirect flow, which the app does not use; set it in supabase/.env.
+[auth.external.google]
+enabled = true
+client_id = "395376462537-a9mb9rdv627ijmr3lpfm31r13kumq0ou.apps.googleusercontent.com"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
+skip_nonce_check = false
 
 # Allow Solana wallet holders to sign in to your project via the Sign in with Solana (SIWS, EIP-4361) standard.
 # You can configure "web3" rate limit in the [auth.rate_limit] section and set up [auth.captcha] if self-hosting.

@@ -32,6 +32,7 @@ Inside a feature folder, use flat files named after what they hold: `household.d
 
 - Screens and widgets never import or call the Supabase client. All data access goes through a repository interface with a Supabase implementation behind it. See ADR-0002.
 - Repositories expose live data as streams (`watchItems(householdId)`) backed by Supabase Realtime, and writes as `Future`s. After a write, the UI updates when the stream delivers the change; do not also patch local state by hand.
+- Build those streams with `liveRows` (`lib/core/live_rows.dart`), not the client's `.stream()`. `.stream()` lists a just-inserted row twice when Realtime delivers its INSERT late.
 - Rules that must hold whoever calls the database (membership, Admin-only actions, "the last Admin cannot leave") are enforced in Postgres: RLS policies, constraints or SQL functions. The UI may hide an action, but the database is what forbids it.
 
 ## State management
@@ -82,6 +83,7 @@ Inside a feature folder, use flat files named after what they hold: `household.d
 ## Environments
 
 - Supabase URL and publishable key (`SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`; the successor to the anon key) come from `--dart-define-from-file`: `env/local.json` (committed, local Docker Supabase) and `env/prod.json` (git-ignored; `env/prod.example.json` shows its shape).
+- Google sign-in uses the Web OAuth client ID (`GOOGLE_WEB_CLIENT_ID`, not secret) from the same files, and the same ID in the Supabase Google provider (`supabase/config.toml` locally). The Android OAuth clients in Google Cloud only register the package name and signing SHA-1; each machine's debug keystore and the release key need their own.
 - Run locally with `flutter run --dart-define-from-file=env/local.json`. For a USB-connected Android phone, run `adb reverse tcp:54321 tcp:54321` so `localhost` reaches the laptop. Local sign-in emails land in the local inbox at `http://localhost:54324`.
 
 ## Testing
