@@ -110,6 +110,39 @@ void main() {
     });
   });
 
+  testWidgets('at least one Module must stay on', (tester) async {
+    await startWithoutHouseholds(tester);
+    await enterName(tester, 'Moda Flat');
+
+    for (final name in [
+      'Shopping List',
+      'Presence',
+      'Announcements',
+      'Tasks',
+      'House Info',
+      'Meals',
+    ]) {
+      await scrollTo(tester, find.text(name));
+      await tester.tap(find.text(name));
+      await tester.pumpAndSettle();
+    }
+    await scrollTo(tester, find.text('Continue'));
+
+    expect(find.text('Switch on at least one Module.'), findsOneWidget);
+    expect(
+      tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Continue'),
+      ),
+      isA<FilledButton>().having((button) => button.enabled, 'enabled', false),
+    );
+
+    await scrollTo(tester, find.text('Meals'));
+    await tester.tap(find.text('Meals'));
+    await tester.pumpAndSettle();
+    await tapContinue(tester);
+    expect(households.created.single.modules, {Module.meals});
+  });
+
   testWidgets('a Household needs a name', (tester) async {
     await startWithoutHouseholds(tester);
 

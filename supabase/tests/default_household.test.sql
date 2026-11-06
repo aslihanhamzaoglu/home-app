@@ -1,6 +1,6 @@
 -- Modules on a new Household, and each person's Default Household.
 begin;
-select plan(11);
+select plan(12);
 
 -- Ayşe creates Households; Can creates his own; Deniz joins Ayşe's first one.
 insert into auth.users (id, email) values
@@ -30,6 +30,12 @@ select throws_ok(
   '23514',
   null,
   'only built-in Modules can be switched on'
+);
+select throws_ok(
+  $$ select public.create_household('Empty', 'Europe/Istanbul', array[]::text[]) $$,
+  '23514',
+  null,
+  'a Household has at least one Module on'
 );
 
 -- Default Household -----------------------------------------------------------

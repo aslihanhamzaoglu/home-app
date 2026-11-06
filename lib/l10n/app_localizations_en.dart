@@ -117,6 +117,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Everything is on. Switch off what your Household won\'t use. Admins can change this later.';
 
   @override
+  String get moduleSetupNoneSelected => 'Switch on at least one Module.';
+
+  @override
   String get moduleShoppingList => 'Shopping List';
 
   @override

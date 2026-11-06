@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'Everything is on. Switch off what your Household won\'t use. Admins can change this later.'**
   String get moduleSetupExplanation;
 
+  /// Shown in the Module setup step of a new Household when every Module is switched off.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch on at least one Module.'**
+  String get moduleSetupNoneSelected;
+
   /// Name of the Shopping List Module.
   ///
   /// In en, this message translates to:

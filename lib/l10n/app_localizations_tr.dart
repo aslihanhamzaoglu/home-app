@@ -117,6 +117,9 @@ class AppLocalizationsTr extends AppLocalizations {
       'Hepsi açık. Evinde kullanmayacağın modülleri kapat. Yöneticiler bunu sonra değiştirebilir.';
 
   @override
+  String get moduleSetupNoneSelected => 'En az bir modülü açık bırak.';
+
+  @override
   String get moduleShoppingList => 'Alışveriş Listesi';
 
   @override

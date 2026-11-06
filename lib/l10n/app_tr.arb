@@ -33,6 +33,7 @@
   "householdNameEmpty": "Ev için bir ad gir.",
   "moduleSetupTitle": "Modülleri seç",
   "moduleSetupExplanation": "Hepsi açık. Evinde kullanmayacağın modülleri kapat. Yöneticiler bunu sonra değiştirebilir.",
+  "moduleSetupNoneSelected": "En az bir modülü açık bırak.",
   "moduleShoppingList": "Alışveriş Listesi",
   "moduleShoppingListDescription": "Evin alması gerekenler",
   "modulePresence": "Evde / Dışarıda",

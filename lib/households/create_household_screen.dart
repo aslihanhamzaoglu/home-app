@@ -187,10 +187,21 @@ class _CreateHouseholdScreenState extends ConsumerState<CreateHouseholdScreen> {
                   ),
           ),
         const SizedBox(height: 12),
+        // The database also refuses a Household with no Modules on.
+        if (_modules.isEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
+            child: Text(
+              l10n.moduleSetupNoneSelected,
+              style: textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+          ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: FilledButton(
-            onPressed: _busy ? null : _create,
+            onPressed: _busy || _modules.isEmpty ? null : _create,
             child: Text(l10n.continueButton),
           ),
         ),

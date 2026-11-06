@@ -72,6 +72,8 @@
   "@moduleSetupTitle": {"description": "Heading of the step after naming a new Household, where its Modules are switched on or off."},
   "moduleSetupExplanation": "Everything is on. Switch off what your Household won't use. Admins can change this later.",
   "@moduleSetupExplanation": {"description": "Explains the Module setup step of a new Household."},
+  "moduleSetupNoneSelected": "Switch on at least one Module.",
+  "@moduleSetupNoneSelected": {"description": "Shown in the Module setup step of a new Household when every Module is switched off."},
   "moduleShoppingList": "Shopping List",
   "@moduleShoppingList": {"description": "Name of the Shopping List Module."},
   "moduleShoppingListDescription": "Things the Household needs to buy",
