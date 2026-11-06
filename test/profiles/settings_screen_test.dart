@@ -11,6 +11,7 @@ void main() {
     id: 'u1',
     displayName: 'Ayşe',
     language: 'en',
+    defaultHouseholdId: null,
     createdAt: DateTime.utc(2026, 10, 1),
   );
 

@@ -6,6 +6,7 @@ void main() {
     'id': '9c2d0000-0000-4000-8000-000000000001',
     'display_name': 'Ayşe',
     'language': 'en',
+    'default_household_id': '7d3f1c2e-0000-4000-8000-000000000001',
     'created_at': '2026-10-29T11:30:00+03:00',
   };
 
@@ -15,6 +16,7 @@ void main() {
     expect(profile.id, '9c2d0000-0000-4000-8000-000000000001');
     expect(profile.displayName, 'Ayşe');
     expect(profile.language, 'en');
+    expect(profile.defaultHouseholdId, '7d3f1c2e-0000-4000-8000-000000000001');
     expect(profile.createdAt, DateTime.utc(2026, 10, 29, 8, 30));
     expect(profile.createdAt.isUtc, isTrue);
   });
@@ -33,8 +35,17 @@ void main() {
     expect(renamed.displayName, 'Ayşe H.');
     expect(renamed.id, profile.id);
     expect(renamed.language, profile.language);
+    expect(renamed.defaultHouseholdId, profile.defaultHouseholdId);
     expect(renamed.createdAt, profile.createdAt);
     expect(renamed, isNot(profile));
+  });
+
+  test('a profile may have no Default Household', () {
+    final profile = Profile.fromJson({...json, 'default_household_id': null});
+
+    expect(profile.defaultHouseholdId, isNull);
+    expect(Profile.fromJson(profile.toJson()), profile);
+    expect(Profile.fromJson(json).copyWith(defaultHouseholdId: null), profile);
   });
 
   test('equal profiles have the same hash code', () {

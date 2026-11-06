@@ -3,6 +3,7 @@ import 'package:home_app/households/household.dart';
 import 'package:home_app/households/member.dart';
 import 'package:home_app/households/supabase_household_repository.dart';
 import 'package:home_app/households/supabase_member_repository.dart';
+import 'package:home_app/households/module.dart';
 
 import '../support/local_supabase.dart';
 
@@ -18,6 +19,7 @@ void main() {
       final household = await households.createHousehold(
         name: 'Fresh Flat',
         timeZone: 'Europe/Istanbul',
+        modules: Module.values.toSet(),
       );
       final householdUpdates = <List<Household>>[];
       final memberUpdates = <List<Member>>[];

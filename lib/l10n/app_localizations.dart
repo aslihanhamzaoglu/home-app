@@ -218,7 +218,7 @@ abstract class AppLocalizations {
   /// **'Enter your name.'**
   String get displayNameEmpty;
 
-  /// Button that saves the display name and continues.
+  /// Button that saves what was entered on a step and moves on.
   ///
   /// In en, this message translates to:
   /// **'Continue'**
@@ -259,6 +259,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get languageHeading;
+
+  /// Heading of the screen that creates a Household, and the switcher entry that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a Household'**
+  String get createHouseholdTitle;
+
+  /// Line under the heading of the create-Household screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Give it a name everyone who lives there will recognise.'**
+  String get createHouseholdExplanation;
+
+  /// Label of the Household name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Household name'**
+  String get householdNameLabel;
+
+  /// Shown when the Household name field is left empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name for the Household.'**
+  String get householdNameEmpty;
+
+  /// Heading of the step after naming a new Household, where its Modules are switched on or off.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your Modules'**
+  String get moduleSetupTitle;
+
+  /// Explains the Module setup step of a new Household.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is on. Switch off what your Household won\'t use. Admins can change this later.'**
+  String get moduleSetupExplanation;
+
+  /// Shown in the Module setup step of a new Household when every Module is switched off.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch on at least one Module.'**
+  String get moduleSetupNoneSelected;
+
+  /// Name of the Shopping List Module.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping List'**
+  String get moduleShoppingList;
+
+  /// What the Shopping List Module is for, under its name in the Module setup step.
+  ///
+  /// In en, this message translates to:
+  /// **'Things the Household needs to buy'**
+  String get moduleShoppingListDescription;
+
+  /// Name of the Presence Module.
+  ///
+  /// In en, this message translates to:
+  /// **'Presence'**
+  String get modulePresence;
+
+  /// What the Presence Module is for, under its name in the Module setup step.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is at home and who is out'**
+  String get modulePresenceDescription;
+
+  /// Name of the Announcements Module.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get moduleAnnouncements;
+
+  /// What the Announcements Module is for, under its name in the Module setup step.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages and Hangouts for everyone'**
+  String get moduleAnnouncementsDescription;
+
+  /// Name of the Tasks Module.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get moduleTasks;
+
+  /// What the Tasks Module is for, under its name in the Module setup step.
+  ///
+  /// In en, this message translates to:
+  /// **'Household jobs, one-off or recurring'**
+  String get moduleTasksDescription;
+
+  /// Name of the House Info Module.
+  ///
+  /// In en, this message translates to:
+  /// **'House Info'**
+  String get moduleHouseInfo;
+
+  /// What the House Info Module is for, under its name in the Module setup step.
+  ///
+  /// In en, this message translates to:
+  /// **'Wifi password, bin day and other facts'**
+  String get moduleHouseInfoDescription;
+
+  /// Name of the Meals Module.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get moduleMeals;
+
+  /// What the Meals Module is for, under its name in the Module setup step.
+  ///
+  /// In en, this message translates to:
+  /// **'Who eats at home for upcoming meals'**
+  String get moduleMealsDescription;
+
+  /// Tooltip of the Household name at the top of the screen, which opens the list of the person's Households.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Household'**
+  String get switchHouseholdTooltip;
+
+  /// Heading of the list of the person's Households in the switcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Households'**
+  String get yourHouseholdsTitle;
+
+  /// Tooltip of the filled star next to the person's Default Household in the switcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Household: the app opens here'**
+  String get defaultHouseholdTooltip;
+
+  /// Tooltip of the empty star that makes a Household the person's Default Household.
+  ///
+  /// In en, this message translates to:
+  /// **'Make this your Default Household'**
+  String get makeDefaultHouseholdTooltip;
+
+  /// Confirmation after picking a Default Household.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} opens next time you start the app.'**
+  String defaultHouseholdSaved(String name);
 }
 
 class _AppLocalizationsDelegate

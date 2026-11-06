@@ -1,9 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:home_app/auth/auth_providers.dart';
 import 'package:home_app/households/household.dart';
 import 'package:home_app/households/household_providers.dart';
 import 'package:home_app/households/member.dart';
+import 'package:home_app/households/module.dart';
 
+import '../auth/fake_auth_repository.dart';
 import 'fake_household_repository.dart';
 import 'fake_member_repository.dart';
 
@@ -12,25 +15,34 @@ void main() {
     id: 'h1',
     name: 'Moda Flat',
     timeZone: 'Europe/Istanbul',
+    modules: {Module.shoppingList},
     createdAt: DateTime.utc(2026, 10, 1),
   );
   final berlin = Household(
     id: 'h2',
     name: 'Berlin Flat',
     timeZone: 'Europe/Berlin',
+    modules: Module.values.toSet(),
     createdAt: DateTime.utc(2026, 10, 2),
   );
 
   test('householdsProvider delivers each update from the repository', () async {
     final repository = FakeHouseholdRepository();
     final container = ProviderContainer(
-      overrides: [householdRepositoryProvider.overrideWithValue(repository)],
+      overrides: [
+        authRepositoryProvider.overrideWithValue(
+          FakeAuthRepository(userId: 'u1'),
+        ),
+        householdRepositoryProvider.overrideWithValue(repository),
+      ],
     );
     addTearDown(container.dispose);
     final updates = <List<Household>>[];
     container.listen(householdsProvider, (_, next) {
       if (next case AsyncData(:final value)) updates.add(value);
     });
+    // Let it find out who is signed in and start watching.
+    await pumpEventQueue();
 
     repository.emit([moda]);
     repository.emit([moda, berlin]);
@@ -68,11 +80,17 @@ void main() {
   test('householdsProvider surfaces repository errors', () async {
     final repository = FakeHouseholdRepository();
     final container = ProviderContainer(
-      overrides: [householdRepositoryProvider.overrideWithValue(repository)],
+      overrides: [
+        authRepositoryProvider.overrideWithValue(
+          FakeAuthRepository(userId: 'u1'),
+        ),
+        householdRepositoryProvider.overrideWithValue(repository),
+      ],
     );
     addTearDown(container.dispose);
     final subscription = container.listen(householdsProvider, (_, _) {});
     addTearDown(subscription.close);
+    await pumpEventQueue();
 
     repository.fail(StateError('offline'));
     await pumpEventQueue();
