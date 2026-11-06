@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:home_app/profiles/profile.dart';
 import 'package:home_app/profiles/profile_repository.dart';
 
-/// An in-memory [ProfileRepository]. Saving a display name sends the changed
+/// An in-memory [ProfileRepository]. Saving a change sends the changed
 /// profile down the stream, like Supabase Realtime does.
 class FakeProfileRepository implements ProfileRepository {
   FakeProfileRepository(List<Profile> profiles)
@@ -23,9 +23,16 @@ class FakeProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<void> updateDisplayName(String userId, String displayName) async {
+  Future<void> updateProfile(
+    String userId, {
+    String? displayName,
+    String? language,
+  }) async {
     if (updateError case final error?) throw error;
-    final updated = _profiles[userId]!.copyWith(displayName: displayName);
+    final updated = _profiles[userId]!.copyWith(
+      displayName: displayName,
+      language: language,
+    );
     _profiles[userId] = updated;
     _changes.add(updated);
   }

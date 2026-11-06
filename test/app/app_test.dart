@@ -10,7 +10,7 @@ void main() {
   final ayse = Profile(
     id: 'u1',
     displayName: 'Ayşe',
-    language: 'tr',
+    language: 'en',
     createdAt: DateTime.utc(2026, 10, 1),
   );
   final newcomer = ayse.copyWith(displayName: '');
@@ -88,6 +88,19 @@ void main() {
     );
 
     expect(find.text('Google ile devam et'), findsOneWidget);
+  });
+
+  testWidgets('a signed-in person sees the language saved in their profile', (
+    tester,
+  ) async {
+    await pumpApp(
+      tester,
+      auth: FakeAuthRepository(userId: 'u1'),
+      profiles: FakeProfileRepository([ayse.copyWith(language: 'tr')]),
+      locale: const Locale('en', 'US'),
+    );
+
+    expect(find.text('Merhaba, Ayşe!'), findsOneWidget);
   });
 
   testWidgets('the app falls back to Turkish for other languages', (

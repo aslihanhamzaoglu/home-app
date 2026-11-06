@@ -89,4 +89,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get signOutButton => 'Çıkış yap';
+
+  @override
+  String get settingsTitle => 'Ayarlar';
+
+  @override
+  String get languageHeading => 'Dil';
 }

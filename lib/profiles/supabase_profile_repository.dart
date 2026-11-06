@@ -29,10 +29,14 @@ class SupabaseProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<void> updateDisplayName(String userId, String displayName) {
+  Future<void> updateProfile(
+    String userId, {
+    String? displayName,
+    String? language,
+  }) {
     return _client
         .from('profiles')
-        .update({'display_name': displayName})
+        .update({'display_name': ?displayName, 'language': ?language})
         .eq('id', userId);
   }
 }

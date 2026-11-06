@@ -27,6 +27,7 @@ class _DisplayNameScreenState extends ConsumerState<DisplayNameScreen> {
   Future<void> _save() async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
+    final language = Localizations.localeOf(context).languageCode;
     final name = _name.text.trim();
     if (name.isEmpty) {
       setState(() => _error = l10n.displayNameEmpty);
@@ -40,9 +41,10 @@ class _DisplayNameScreenState extends ConsumerState<DisplayNameScreen> {
     });
     try {
       // The router moves on once the saved name arrives on the profile stream.
+      // Until now the app followed the phone's language; keep it.
       await ref
           .read(profileRepositoryProvider)
-          .updateDisplayName(profile.id, name);
+          .updateProfile(profile.id, displayName: name, language: language);
     } catch (error) {
       debugPrint('Saving the display name failed: $error');
       messenger.showSnackBar(SnackBar(content: Text(l10n.genericError)));

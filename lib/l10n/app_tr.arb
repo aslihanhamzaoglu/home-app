@@ -24,5 +24,7 @@
   "loadingFailed": "Hesabın yüklenemedi.",
   "retryButton": "Tekrar dene",
   "homeGreeting": "Merhaba, {name}!",
-  "signOutButton": "Çıkış yap"
+  "signOutButton": "Çıkış yap",
+  "settingsTitle": "Ayarlar",
+  "languageHeading": "Dil"
 }

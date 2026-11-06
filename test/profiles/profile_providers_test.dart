@@ -62,7 +62,7 @@ void main() {
     final container = containerFor(FakeAuthRepository(userId: 'u1'), profiles);
     await pumpEventQueue();
 
-    await profiles.updateDisplayName('u1', 'Ayşe');
+    await profiles.updateProfile('u1', displayName: 'Ayşe');
     await pumpEventQueue();
 
     expect(container.read(currentProfileProvider).value, ayse);
