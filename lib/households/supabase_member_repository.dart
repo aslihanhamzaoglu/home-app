@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/live_rows.dart';
 import 'member.dart';
 import 'member_repository.dart';
 
@@ -10,12 +11,20 @@ class SupabaseMemberRepository implements MemberRepository {
 
   @override
   Stream<List<Member>> watchMembers(String householdId) {
-    return _client
-        .from('members')
-        .stream(primaryKey: ['id'])
-        .eq('household_id', householdId)
-        .order('joined_at', ascending: true)
-        .map((rows) => rows.map(Member.fromJson).toList());
+    return liveRows(
+      _client,
+      table: 'members',
+      filter: PostgresChangeFilter(
+        type: PostgresChangeFilterType.eq,
+        column: 'household_id',
+        value: householdId,
+      ),
+      load: () => _client
+          .from('members')
+          .select()
+          .eq('household_id', householdId)
+          .order('joined_at'),
+    ).map((rows) => rows.map(Member.fromJson).toList());
   }
 
   @override

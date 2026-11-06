@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/live_rows.dart';
 import 'household.dart';
 import 'household_repository.dart';
 
@@ -11,11 +12,11 @@ class SupabaseHouseholdRepository implements HouseholdRepository {
   @override
   Stream<List<Household>> watchHouseholds() {
     // Row-level security limits the rows to the person's own Households.
-    return _client
-        .from('households')
-        .stream(primaryKey: ['id'])
-        .order('name', ascending: true)
-        .map((rows) => rows.map(Household.fromJson).toList());
+    return liveRows(
+      _client,
+      table: 'households',
+      load: () => _client.from('households').select().order('name'),
+    ).map((rows) => rows.map(Household.fromJson).toList());
   }
 
   @override
