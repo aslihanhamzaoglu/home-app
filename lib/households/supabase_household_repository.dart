@@ -31,7 +31,10 @@ class SupabaseHouseholdRepository implements HouseholdRepository {
       params: {
         'name': name,
         'time_zone': timeZone,
-        'modules': [for (final module in modules) module.key],
+        'modules': [
+          for (final module in Module.values)
+            if (modules.contains(module)) module.key,
+        ],
       },
     );
     return Household.fromJson(row);

@@ -50,18 +50,21 @@ String? authRedirect(AsyncValue<Profile?> profile, String location) {
 /// person has no Default Household among them, or asks to create one when
 /// they have none. A Household the person is not in sends them home.
 String? _householdRedirect(
-  Profile profile,
+  AsyncValue<Profile?> profile,
   AsyncValue<List<Household>> households,
   String location,
 ) {
-  // While the Households load or fail, the screen shows it.
+  // While the Households load or fail, the screen shows it. While either
+  // reloads, for example right after signing in or out, its value is still
+  // the previous person's, so wait for both.
+  if (profile.isLoading || households.isLoading) return null;
+  final defaultId = profile.value?.defaultHouseholdId;
   final list = households.value;
   if (list == null) return null;
   if (location == Routes.home) {
     if (list.isEmpty) return Routes.createHousehold;
     final opened =
-        list.where((h) => h.id == profile.defaultHouseholdId).firstOrNull ??
-        list.first;
+        list.where((h) => h.id == defaultId).firstOrNull ?? list.first;
     return Routes.household(opened.id);
   }
   const prefix = '/households/';
@@ -83,12 +86,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: Listenable.merge([profile, households]),
     redirect: (context, state) {
       final location = state.matchedLocation;
-      final signedIn = profile.value.value;
       if (authRedirect(profile.value, location) case final target?) {
         return target;
       }
-      if (signedIn == null) return null;
-      return _householdRedirect(signedIn, households.value, location);
+      if (profile.value.value == null) return null;
+      return _householdRedirect(profile.value, households.value, location);
     },
     routes: [
       GoRoute(

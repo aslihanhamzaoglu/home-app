@@ -63,6 +63,33 @@ void main() {
     expect(appBarTitle('Berlin Flat'), findsOneWidget);
   });
 
+  testWidgets('signing in waits for the Households before opening one', (
+    tester,
+  ) async {
+    profiles = FakeProfileRepository([ayseWithDefault(modaFlat.id)]);
+    final auth = FakeAuthRepository();
+    // Lists nothing until the test emits, like a slow first load.
+    households = FakeHouseholdRepository();
+    await pumpApp(
+      tester,
+      auth: auth,
+      profiles: profiles,
+      households: households,
+    );
+
+    auth.emit('u1');
+    // A spinner shows meanwhile, so the screen never settles.
+    for (var frame = 0; frame < 10; frame++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    expect(find.text('Create a Household'), findsNothing);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    households.emit([berlin, modaFlat]);
+    await tester.pumpAndSettle();
+    expect(appBarTitle('Moda Flat'), findsOneWidget);
+  });
+
   testWidgets('the switcher opens another Household', (tester) async {
     profiles = FakeProfileRepository([ayseWithDefault(berlin.id)]);
     await launch(tester);
