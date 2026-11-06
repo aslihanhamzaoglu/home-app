@@ -2,29 +2,54 @@ import 'dart:async';
 
 import 'package:home_app/households/household.dart';
 import 'package:home_app/households/household_repository.dart';
+import 'package:home_app/households/module.dart';
 
-/// An in-memory [HouseholdRepository] whose stream the test drives.
+/// An in-memory [HouseholdRepository]. Created Households go down the
+/// stream, like Supabase Realtime does. Without starting [households] the
+/// stream waits for the test to [emit].
 class FakeHouseholdRepository implements HouseholdRepository {
-  final _households = StreamController<List<Household>>.broadcast();
+  FakeHouseholdRepository([List<Household>? households])
+    : _households = households;
 
-  void emit(List<Household> households) => _households.add(households);
+  List<Household>? _households;
+  final _changes = StreamController<List<Household>>.broadcast();
 
-  void fail(Object error) => _households.addError(error);
+  /// The Households created through [createHousehold], oldest first.
+  final created = <Household>[];
+  Object? createError;
+
+  void emit(List<Household> households) {
+    _households = households;
+    _changes.add(households);
+  }
+
+  void fail(Object error) => _changes.addError(error);
 
   @override
-  Stream<List<Household>> watchHouseholds() => _households.stream;
+  Stream<List<Household>> watchHouseholds() async* {
+    if (_households case final households?) yield households;
+    yield* _changes.stream;
+  }
 
   @override
   Future<Household> createHousehold({
     required String name,
     required String timeZone,
+    required Set<Module> modules,
   }) async {
-    return Household(
-      id: 'new-household',
+    if (createError case final error?) throw error;
+    final household = Household(
+      id: 'created-${created.length + 1}',
       name: name,
       timeZone: timeZone,
-      createdAt: DateTime.utc(2026),
+      modules: modules,
+      createdAt: DateTime.utc(2026, 11, 6),
     );
+    created.add(household);
+    emit(
+      [...?_households, household]..sort((a, b) => a.name.compareTo(b.name)),
+    );
+    return household;
   }
 
   @override

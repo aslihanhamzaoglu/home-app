@@ -95,4 +95,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageHeading => 'Language';
+
+  @override
+  String get createHouseholdTitle => 'Create a Household';
+
+  @override
+  String get createHouseholdExplanation =>
+      'Give it a name everyone who lives there will recognise.';
+
+  @override
+  String get householdNameLabel => 'Household name';
+
+  @override
+  String get householdNameEmpty => 'Enter a name for the Household.';
+
+  @override
+  String get moduleSetupTitle => 'Choose your Modules';
+
+  @override
+  String get moduleSetupExplanation =>
+      'Everything is on. Switch off what your Household won\'t use. Admins can change this later.';
+
+  @override
+  String get moduleShoppingList => 'Shopping List';
+
+  @override
+  String get moduleShoppingListDescription =>
+      'Things the Household needs to buy';
+
+  @override
+  String get modulePresence => 'Presence';
+
+  @override
+  String get modulePresenceDescription => 'Who is at home and who is out';
+
+  @override
+  String get moduleAnnouncements => 'Announcements';
+
+  @override
+  String get moduleAnnouncementsDescription =>
+      'Messages and Hangouts for everyone';
+
+  @override
+  String get moduleTasks => 'Tasks';
+
+  @override
+  String get moduleTasksDescription => 'Household jobs, one-off or recurring';
+
+  @override
+  String get moduleHouseInfo => 'House Info';
+
+  @override
+  String get moduleHouseInfoDescription =>
+      'Wifi password, bin day and other facts';
+
+  @override
+  String get moduleMeals => 'Meals';
+
+  @override
+  String get moduleMealsDescription => 'Who eats at home for upcoming meals';
+
+  @override
+  String get switchHouseholdTooltip => 'Switch Household';
+
+  @override
+  String get yourHouseholdsTitle => 'Your Households';
+
+  @override
+  String get defaultHouseholdTooltip => 'Default Household: the app opens here';
+
+  @override
+  String get makeDefaultHouseholdTooltip => 'Make this your Default Household';
+
+  @override
+  String defaultHouseholdSaved(String name) {
+    return '$name opens next time you start the app.';
+  }
 }

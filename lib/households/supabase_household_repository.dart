@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/live_rows.dart';
 import 'household.dart';
 import 'household_repository.dart';
+import 'module.dart';
 
 class SupabaseHouseholdRepository implements HouseholdRepository {
   SupabaseHouseholdRepository(this._client);
@@ -23,10 +24,15 @@ class SupabaseHouseholdRepository implements HouseholdRepository {
   Future<Household> createHousehold({
     required String name,
     required String timeZone,
+    required Set<Module> modules,
   }) async {
     final row = await _client.rpc<Map<String, dynamic>>(
       'create_household',
-      params: {'name': name, 'time_zone': timeZone},
+      params: {
+        'name': name,
+        'time_zone': timeZone,
+        'modules': [for (final module in modules) module.key],
+      },
     );
     return Household.fromJson(row);
   }

@@ -95,4 +95,79 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get languageHeading => 'Dil';
+
+  @override
+  String get createHouseholdTitle => 'Yeni ev oluştur';
+
+  @override
+  String get createHouseholdExplanation =>
+      'Orada yaşayan herkesin tanıyacağı bir ad ver.';
+
+  @override
+  String get householdNameLabel => 'Evin adı';
+
+  @override
+  String get householdNameEmpty => 'Ev için bir ad gir.';
+
+  @override
+  String get moduleSetupTitle => 'Modülleri seç';
+
+  @override
+  String get moduleSetupExplanation =>
+      'Hepsi açık. Evinde kullanmayacağın modülleri kapat. Yöneticiler bunu sonra değiştirebilir.';
+
+  @override
+  String get moduleShoppingList => 'Alışveriş Listesi';
+
+  @override
+  String get moduleShoppingListDescription => 'Evin alması gerekenler';
+
+  @override
+  String get modulePresence => 'Evde / Dışarıda';
+
+  @override
+  String get modulePresenceDescription => 'Kim evde, kim dışarıda';
+
+  @override
+  String get moduleAnnouncements => 'Duyurular';
+
+  @override
+  String get moduleAnnouncementsDescription =>
+      'Herkese mesajlar ve etkinlikler';
+
+  @override
+  String get moduleTasks => 'Ev İşleri';
+
+  @override
+  String get moduleTasksDescription => 'Tek seferlik ya da düzenli ev işleri';
+
+  @override
+  String get moduleHouseInfo => 'Ev Bilgileri';
+
+  @override
+  String get moduleHouseInfoDescription =>
+      'Wifi şifresi, çöp günü ve diğer bilgiler';
+
+  @override
+  String get moduleMeals => 'Yemek';
+
+  @override
+  String get moduleMealsDescription => 'Kim evde yemek yiyecek';
+
+  @override
+  String get switchHouseholdTooltip => 'Evi değiştir';
+
+  @override
+  String get yourHouseholdsTitle => 'Evlerin';
+
+  @override
+  String get defaultHouseholdTooltip => 'Varsayılan ev: uygulama burada açılır';
+
+  @override
+  String get makeDefaultHouseholdTooltip => 'Varsayılan evin yap';
+
+  @override
+  String defaultHouseholdSaved(String name) {
+    return 'Uygulamayı bir dahaki açışında $name açılacak.';
+  }
 }

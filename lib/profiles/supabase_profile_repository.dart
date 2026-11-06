@@ -33,10 +33,15 @@ class SupabaseProfileRepository implements ProfileRepository {
     String userId, {
     String? displayName,
     String? language,
+    String? defaultHouseholdId,
   }) {
     return _client
         .from('profiles')
-        .update({'display_name': ?displayName, 'language': ?language})
+        .update({
+          'display_name': ?displayName,
+          'language': ?language,
+          'default_household_id': ?defaultHouseholdId,
+        })
         .eq('id', userId);
   }
 }

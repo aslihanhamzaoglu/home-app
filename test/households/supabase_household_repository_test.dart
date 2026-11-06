@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_app/households/supabase_household_repository.dart';
+import 'package:home_app/households/module.dart';
 
 import '../support/local_supabase.dart';
 
@@ -16,6 +17,7 @@ void main() {
       final household = await repository.createHousehold(
         name: 'Integration Flat',
         timeZone: 'Europe/Istanbul',
+        modules: Module.values.toSet(),
       );
 
       expect(household.name, 'Integration Flat');
@@ -36,6 +38,7 @@ void main() {
     final household = await repository.createHousehold(
       name: 'Old Name',
       timeZone: 'Europe/Istanbul',
+      modules: Module.values.toSet(),
     );
 
     await repository.updateHousehold(household.copyWith(name: 'New Name'));

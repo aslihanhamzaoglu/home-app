@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:home_app/households/member_repository.dart';
 import 'package:home_app/households/supabase_household_repository.dart';
 import 'package:home_app/households/supabase_member_repository.dart';
+import 'package:home_app/households/module.dart';
 
 import '../support/local_supabase.dart';
 
@@ -11,9 +12,12 @@ void main() {
     () async {
       final creator = await signUpNewPerson();
       addTearDown(creator.dispose);
-      final household = await SupabaseHouseholdRepository(
-        creator,
-      ).createHousehold(name: 'Solo Flat', timeZone: 'Europe/Berlin');
+      final household = await SupabaseHouseholdRepository(creator)
+          .createHousehold(
+            name: 'Solo Flat',
+            timeZone: 'Europe/Berlin',
+            modules: Module.values.toSet(),
+          );
       final repository = SupabaseMemberRepository(creator);
 
       final members = await repository.watchMembers(household.id).first;

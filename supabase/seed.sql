@@ -44,3 +44,8 @@ insert into public.members (household_id, user_id, is_admin) values
   ('20000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-00000000000d', false),
   ('20000000-0000-4000-8000-000000000002', '10000000-0000-4000-8000-00000000000c', true),
   ('20000000-0000-4000-8000-000000000002', '10000000-0000-4000-8000-00000000000d', false);
+
+-- Deniz opens Berlin Flat; everyone else starts with no Default Household and
+-- opens their first Household by name.
+update public.profiles set default_household_id = '20000000-0000-4000-8000-000000000002'
+where id = '10000000-0000-4000-8000-00000000000d';

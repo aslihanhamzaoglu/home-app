@@ -1,11 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_app/households/household.dart';
+import 'package:home_app/households/module.dart';
 
 void main() {
   final json = {
     'id': '7d3f1c2e-0000-4000-8000-000000000001',
     'name': 'Moda flat',
     'time_zone': 'Europe/Istanbul',
+    'modules': ['shopping_list', 'tasks', 'meals'],
     'created_at': '2026-10-26T08:30:00+00:00',
   };
 
@@ -15,6 +17,11 @@ void main() {
     expect(household.id, '7d3f1c2e-0000-4000-8000-000000000001');
     expect(household.name, 'Moda flat');
     expect(household.timeZone, 'Europe/Istanbul');
+    expect(household.modules, {
+      Module.shoppingList,
+      Module.tasks,
+      Module.meals,
+    });
     expect(household.createdAt, DateTime.utc(2026, 10, 26, 8, 30));
     expect(household.createdAt.isUtc, isTrue);
   });
@@ -24,6 +31,16 @@ void main() {
 
     expect(Household.fromJson(household.toJson()), household);
     expect(household.toJson()['time_zone'], 'Europe/Istanbul');
+    expect(household.toJson()['modules'], ['shopping_list', 'tasks', 'meals']);
+  });
+
+  test('skips Modules this app version does not know yet', () {
+    final household = Household.fromJson({
+      ...json,
+      'modules': ['presence', 'pets'],
+    });
+
+    expect(household.modules, {Module.presence});
   });
 
   test('copyWith changes only the given fields', () {
@@ -32,6 +49,10 @@ void main() {
 
     expect(renamed.name, 'Kadıköy flat');
     expect(renamed.timeZone, household.timeZone);
+    expect(renamed.modules, household.modules);
+    expect(household.copyWith(modules: {Module.presence}).modules, {
+      Module.presence,
+    });
     expect(renamed.id, household.id);
     expect(renamed, isNot(household));
   });
@@ -41,6 +62,23 @@ void main() {
     expect(
       Household.fromJson(json).hashCode,
       Household.fromJson({...json}).hashCode,
+    );
+  });
+
+  test('the order of Modules does not matter for equality', () {
+    final reordered = Household.fromJson({
+      ...json,
+      'modules': ['meals', 'shopping_list', 'tasks'],
+    });
+
+    expect(reordered, Household.fromJson(json));
+    expect(reordered.hashCode, Household.fromJson(json).hashCode);
+    expect(
+      Household.fromJson({
+        ...json,
+        'modules': ['meals'],
+      }),
+      isNot(Household.fromJson(json)),
     );
   });
 }

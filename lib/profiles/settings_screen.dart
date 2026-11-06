@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../auth/auth_providers.dart';
 import '../l10n/app_localizations.dart';
 import 'profile_providers.dart';
 
@@ -10,7 +11,8 @@ import 'profile_providers.dart';
 /// find theirs whatever the app is showing.
 const _languageNames = {'tr': 'Türkçe', 'en': 'English'};
 
-/// The signed-in person's settings: for now, the language the app is in.
+/// The signed-in person's settings: the language the app is in, and
+/// signing out.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -31,6 +33,17 @@ class SettingsScreen extends ConsumerWidget {
           .updateProfile(profile.id, language: language);
     } catch (error) {
       debugPrint('Saving the language failed: $error');
+      messenger.showSnackBar(SnackBar(content: Text(l10n.genericError)));
+    }
+  }
+
+  Future<void> _signOut(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await ref.read(authRepositoryProvider).signOut();
+    } catch (error) {
+      debugPrint('Sign-out failed: $error');
       messenger.showSnackBar(SnackBar(content: Text(l10n.genericError)));
     }
   }
@@ -64,6 +77,12 @@ class SettingsScreen extends ConsumerWidget {
                   RadioListTile<String>(value: code, title: Text(name)),
               ],
             ),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: Text(l10n.signOutButton),
+            onTap: () => _signOut(context, ref),
           ),
         ],
       ),

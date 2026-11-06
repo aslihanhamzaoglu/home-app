@@ -11,6 +11,7 @@ void main() {
     id: 'u1',
     displayName: 'Ayşe',
     language: 'en',
+    defaultHouseholdId: null,
     createdAt: DateTime.utc(2026, 10, 1),
   );
   final newcomer = ayse.copyWith(displayName: '');
@@ -70,6 +71,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Hi, Ayşe!'), findsOneWidget);
 
+    await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Sign out'));
     await tester.pumpAndSettle();
     expect(find.text('Welcome to Ev'), findsOneWidget);

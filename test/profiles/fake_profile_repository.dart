@@ -27,11 +27,14 @@ class FakeProfileRepository implements ProfileRepository {
     String userId, {
     String? displayName,
     String? language,
+    String? defaultHouseholdId,
   }) async {
     if (updateError case final error?) throw error;
     final updated = _profiles[userId]!.copyWith(
       displayName: displayName,
       language: language,
+      defaultHouseholdId:
+          defaultHouseholdId ?? _profiles[userId]!.defaultHouseholdId,
     );
     _profiles[userId] = updated;
     _changes.add(updated);
