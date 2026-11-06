@@ -184,6 +184,58 @@ void main() {
     expect(households.created.single.modules, isNot(contains(Module.meals)));
   });
 
+  testWidgets(
+    'when the new Household never shows up, it says so and retrying opens it',
+    (tester) async {
+      await startWithoutHouseholds(tester);
+      households.holdBackCreated = true;
+      await enterName(tester, 'Moda Flat');
+
+      await scrollTo(tester, find.text('Continue'));
+      await tester.tap(find.text('Continue'));
+      await tester.pump(const Duration(seconds: 11));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Something went wrong. Check your connection and try again.'),
+        findsOneWidget,
+      );
+      expect(
+        tester.widget<FilledButton>(
+          find.widgetWithText(FilledButton, 'Continue'),
+        ),
+        isA<FilledButton>().having((button) => button.enabled, 'enabled', true),
+      );
+
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
+      await tapContinue(tester);
+
+      expect(households.created, hasLength(1));
+      expect(find.widgetWithText(AppBar, 'Moda Flat'), findsOneWidget);
+    },
+  );
+
+  testWidgets('a Households error while opening the new one says so', (
+    tester,
+  ) async {
+    await startWithoutHouseholds(tester);
+    households.holdBackCreated = true;
+    await enterName(tester, 'Moda Flat');
+
+    await scrollTo(tester, find.text('Continue'));
+    await tester.tap(find.text('Continue'));
+    await tester.pump();
+    households.fail(StateError('offline'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Something went wrong. Check your connection and try again.'),
+      findsOneWidget,
+    );
+    expect(households.created, hasLength(1));
+  });
+
   testWidgets('back from the Modules returns to the name', (tester) async {
     await startWithoutHouseholds(tester);
     await enterName(tester, 'Moda Flat');

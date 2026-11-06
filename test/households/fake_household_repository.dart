@@ -18,6 +18,10 @@ class FakeHouseholdRepository implements HouseholdRepository {
   final created = <Household>[];
   Object? createError;
 
+  /// When true, a created Household is saved but not sent down the stream,
+  /// as when Realtime misses the change. Watching again still lists it.
+  bool holdBackCreated = false;
+
   void emit(List<Household> households) {
     _households = households;
     _changes.add(households);
@@ -46,9 +50,13 @@ class FakeHouseholdRepository implements HouseholdRepository {
       createdAt: DateTime.utc(2026, 11, 6),
     );
     created.add(household);
-    emit(
-      [...?_households, household]..sort((a, b) => a.name.compareTo(b.name)),
-    );
+    final households = [...?_households, household]
+      ..sort((a, b) => a.name.compareTo(b.name));
+    if (holdBackCreated) {
+      _households = households;
+    } else {
+      emit(households);
+    }
     return household;
   }
 

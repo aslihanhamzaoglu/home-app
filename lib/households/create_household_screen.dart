@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,9 +12,17 @@ import 'household_providers.dart';
 import 'module.dart';
 import 'module_names.dart';
 
+/// How long to wait for a saved Household to be listed.
+const _openTimeout = Duration(seconds: 10);
+
 /// Creates a Household in two steps: its name, then which Modules are on.
 /// Nothing is saved until the second step, so quitting halfway leaves no
 /// half-set-up Household behind.
+///
+/// After saving, the screen opens the new Household once the Households
+/// stream lists it. If that takes longer than [_openTimeout] or the stream
+/// fails, it says so; trying again loads the Households afresh instead of
+/// saving a second Household.
 class CreateHouseholdScreen extends ConsumerStatefulWidget {
   const CreateHouseholdScreen({super.key});
 
@@ -31,8 +41,15 @@ class _CreateHouseholdScreenState extends ConsumerState<CreateHouseholdScreen> {
   /// The Household just created, until it arrives on the Households stream.
   String? _createdId;
 
+  /// Gives up waiting for [_createdId] to be listed.
+  Timer? _openTimer;
+
+  /// Once saved, the name and Modules can no longer change here.
+  bool get _locked => _busy || _createdId != null;
+
   @override
   void dispose() {
+    _openTimer?.cancel();
     _name.dispose();
     super.dispose();
   }
@@ -51,6 +68,13 @@ class _CreateHouseholdScreenState extends ConsumerState<CreateHouseholdScreen> {
   }
 
   Future<void> _create() async {
+    if (_createdId != null) {
+      // Already saved: only opening it failed. Load the list again.
+      setState(() => _busy = true);
+      _waitToOpen();
+      ref.invalidate(householdsProvider);
+      return;
+    }
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     setState(() => _busy = true);
@@ -64,6 +88,7 @@ class _CreateHouseholdScreenState extends ConsumerState<CreateHouseholdScreen> {
             modules: {..._modules},
           );
       _createdId = household.id;
+      _waitToOpen();
       _openWhenListed(ref.read(householdsProvider).value);
     } catch (error) {
       debugPrint('Creating a Household failed: $error');
@@ -78,27 +103,51 @@ class _CreateHouseholdScreenState extends ConsumerState<CreateHouseholdScreen> {
     final id = _createdId;
     if (!mounted || id == null || households == null) return;
     if (households.any((household) => household.id == id)) {
+      _openTimer?.cancel();
       _createdId = null;
       context.go(Routes.household(id));
     }
   }
 
+  void _waitToOpen() {
+    _openTimer?.cancel();
+    _openTimer = Timer(_openTimeout, () => _stopWaiting('timed out'));
+  }
+
+  /// Stops waiting for the new Household and lets the person try again.
+  void _stopWaiting(Object reason) {
+    _openTimer?.cancel();
+    if (!mounted || !_busy) return;
+    debugPrint('Opening the new Household failed: $reason');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context).genericError)),
+    );
+    setState(() => _busy = false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    ref.listen(householdsProvider, (_, next) => _openWhenListed(next.value));
+    ref.listen(householdsProvider, (_, next) {
+      if (_createdId == null) return;
+      if (next case AsyncError(:final error) when !next.isLoading) {
+        _stopWaiting(error);
+      } else {
+        _openWhenListed(next.value);
+      }
+    });
     final l10n = AppLocalizations.of(context);
 
     return PopScope(
       // The back button returns from the Modules to the name.
       canPop: !_choosingModules,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && !_busy) setState(() => _choosingModules = false);
+        if (!didPop && !_locked) setState(() => _choosingModules = false);
       },
       child: Scaffold(
         appBar: AppBar(
           leading: _choosingModules
               ? BackButton(
-                  onPressed: _busy
+                  onPressed: _locked
                       ? null
                       : () => setState(() => _choosingModules = false),
                 )
@@ -180,7 +229,7 @@ class _CreateHouseholdScreenState extends ConsumerState<CreateHouseholdScreen> {
             title: Text(module.name(l10n)),
             subtitle: Text(module.description(l10n)),
             value: _modules.contains(module),
-            onChanged: _busy
+            onChanged: _locked
                 ? null
                 : (on) => setState(
                     () => on ? _modules.add(module) : _modules.remove(module),
