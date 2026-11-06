@@ -55,5 +55,9 @@
     "placeholders": {"name": {"type": "String", "example": "Ayşe"}}
   },
   "signOutButton": "Sign out",
-  "@signOutButton": {"description": "Button that signs the person out."}
+  "@signOutButton": {"description": "Button that signs the person out."},
+  "settingsTitle": "Settings",
+  "@settingsTitle": {"description": "Heading of the settings screen, and the tooltip of the button that opens it."},
+  "languageHeading": "Language",
+  "@languageHeading": {"description": "Heading above the choice of app language on the settings screen."}
 }

@@ -36,6 +36,19 @@ void main() {
     expect(find.text('What should we call you?'), findsOneWidget);
   });
 
+  testWidgets('saving the name also saves the phone\'s language', (
+    tester,
+  ) async {
+    // The new profile has the database default, Turkish; the phone is English.
+    await pumpNameScreen(tester);
+
+    await tester.enterText(find.byKey(const Key('displayName')), 'Ayşe');
+    await tester.tap(find.text('Continue'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Hi, Ayşe!'), findsOneWidget);
+  });
+
   testWidgets('a failed save says so and keeps the name', (tester) async {
     await pumpNameScreen(tester);
     profiles.updateError = StateError('offline');

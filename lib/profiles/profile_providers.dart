@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../auth/auth_providers.dart';
@@ -18,4 +20,13 @@ final currentProfileProvider = StreamProvider<Profile?>((ref) async* {
     return;
   }
   yield* ref.watch(profileRepositoryProvider).watchProfile(userId);
+});
+
+/// The language the app is shown in: the one saved in the signed-in
+/// person's profile, or null to follow the phone. New people follow the
+/// phone until they save their name, which also saves that language.
+final appLocaleProvider = Provider<Locale?>((ref) {
+  final profile = ref.watch(currentProfileProvider).value;
+  if (profile == null || !profile.hasDisplayName) return null;
+  return Locale(profile.language);
 });

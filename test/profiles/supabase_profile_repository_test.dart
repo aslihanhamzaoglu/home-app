@@ -21,7 +21,7 @@ void main() {
       // Give Realtime a moment to subscribe (and to deliver the late INSERT
       // that liveRows guards against) before the change.
       await Future<void>.delayed(const Duration(seconds: 2));
-      await repository.updateDisplayName(userId, 'Ayşe');
+      await repository.updateProfile(userId, displayName: 'Ayşe');
       await Future<void>.delayed(const Duration(seconds: 2));
 
       expect(names.first, '');

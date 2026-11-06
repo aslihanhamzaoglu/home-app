@@ -247,6 +247,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out'**
   String get signOutButton;
+
+  /// Heading of the settings screen, and the tooltip of the button that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// Heading above the choice of app language on the settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageHeading;
 }
 
 class _AppLocalizationsDelegate

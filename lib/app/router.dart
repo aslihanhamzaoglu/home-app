@@ -6,6 +6,7 @@ import '../auth/sign_in_screen.dart';
 import '../profiles/display_name_screen.dart';
 import '../profiles/profile.dart';
 import '../profiles/profile_providers.dart';
+import '../profiles/settings_screen.dart';
 import 'home_screen.dart';
 import 'loading_screen.dart';
 
@@ -14,6 +15,7 @@ abstract final class Routes {
   static const signIn = '/sign-in';
   static const displayName = '/name';
   static const home = '/';
+  static const settings = '/settings';
 }
 
 /// Where the router sends someone at [location], given the signed-in
@@ -59,6 +61,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.home,
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: Routes.settings,
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../auth/auth_providers.dart';
 import '../l10n/app_localizations.dart';
 import '../profiles/profile_providers.dart';
+import 'router.dart';
 
 /// Where signed-in people land. The Household screens replace this in later
 /// tickets.
@@ -27,6 +29,15 @@ class HomeScreen extends ConsumerWidget {
     final name = ref.watch(currentProfileProvider).value?.displayName ?? '';
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            tooltip: l10n.settingsTitle,
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push(Routes.settings),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: Column(

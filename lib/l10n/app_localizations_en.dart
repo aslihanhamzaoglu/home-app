@@ -89,4 +89,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signOutButton => 'Sign out';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get languageHeading => 'Language';
 }
